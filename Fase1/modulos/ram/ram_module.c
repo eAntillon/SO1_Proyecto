@@ -19,11 +19,11 @@ struct sysinfo info;
 static int escribir_a_proc(struct seq_file *file_proc, void *v)
 {
     si_meminfo(&info);
-    long unsigned int totalram = ((uint64_t)info.totalram * info.mem_unit) / (1024 * 1024);
-    long unsigned int freeram = ((uint64_t)(info.freeram + info.sharedram + info.bufferram) * info.mem_unit) / (1024 * 1024);
-    long unsigned int ramusage = totalram - freeram;
-    int  percent = (int)(ramusage/totalram*100); 
-    seq_printf(file_proc, "{\"totalram\": %lu,\"ramusage\": %lu,\"rampercent\": %d,\"freeram\":%lu}", 
+    int totalram = ((uint64_t)info.totalram * info.mem_unit) / (1024 * 1024);
+    int freeram = ((uint64_t)(info.freeram + info.sharedram + info.bufferram) * info.mem_unit) / (1024 * 1024);
+    int ramusage = totalram - freeram;
+    long long int percent = (ramusage* 100) / totalram ;
+    seq_printf(file_proc, "{\"totalram\": %d,\"ramusage\": %d,\"rampercent\": %llu,\"freeram\":%d}", 
         totalram, ramusage, percent, freeram );
 
     return 0;
