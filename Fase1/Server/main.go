@@ -6,8 +6,10 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 )
 
 type InfoRam struct {
@@ -18,11 +20,12 @@ type InfoRam struct {
 	Ram_libre      int    `json:"Freeram"`
 }
 
-type ramgenerada struct {
-	Totalram   int `json:"totalram"`
-	Ramusage   int `json:"ramusage"`
-	Rampercent int `json:"rampercent"`
-	Freeram    int `json:"freeram"`
+func loadEnv() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
@@ -43,8 +46,9 @@ func getram(w http.ResponseWriter, r *http.Request) {
 		log.Println(err2)
 		return
 	}
-	var data ramgenerada
+	var data InfoRam
 	json.Unmarshal(bytesLeidos, &data)
+	data.Vm = os.Getenv("VM")
 	json.NewEncoder(w).Encode(data)
 }
 
@@ -61,17 +65,17 @@ func getprocesos(w http.ResponseWriter, r *http.Request) {
 	leido := string(bytesLeidos[:])
 	result := leido[:len(leido)-3] + "]"
 	var objmap []map[string]interface{}
-	
+
 	if err := json.Unmarshal([]byte(result), &objmap); err != nil {
 		log.Fatal(err)
 	}
-	
 
 	json.NewEncoder(w).Encode(objmap)
 }
 
 func main() {
 	router := mux.NewRouter()
+	loadEnv()
 	http.HandleFunc("/", home)
 	router.HandleFunc("/getram", getram).Methods("GET", "OPTIONS")
 	router.HandleFunc("/getprocesos", getprocesos).Methods("GET", "OPTIONS")
