@@ -19,10 +19,10 @@ type InfoRam struct {
 }
 
 type ramgenerada struct {
-	Totalram   int `json:"Totalram"`
-	Ramusage   int `json:"Ramusage"`
-	Rampercent int `json:"Rampercent"`
-	Freeram    int `json:"Freeram"`
+	Totalram   int `json:"totalram"`
+	Ramusage   int `json:"ramusage"`
+	Rampercent int `json:"rampercent"`
+	Freeram    int `json:"freeram"`
 }
 
 func home(w http.ResponseWriter, r *http.Request) {
@@ -35,7 +35,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 func getram(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Content-Type", "application/json")
 
 	ram := "/proc/ram_module"
 	bytesLeidos, err2 := ioutil.ReadFile(ram)
@@ -43,10 +43,9 @@ func getram(w http.ResponseWriter, r *http.Request) {
 		log.Println(err2)
 		return
 	}
-
-	leido := string(bytesLeidos[:])
-
-	json.NewEncoder(w).Encode(string(leido))
+	var data ramgenerada
+	json.Unmarshal(bytesLeidos, &data)
+	json.NewEncoder(w).Encode(data)
 }
 
 func getprocesos(w http.ResponseWriter, r *http.Request) {
@@ -59,10 +58,16 @@ func getprocesos(w http.ResponseWriter, r *http.Request) {
 		log.Println(err2)
 		return
 	}
-
 	leido := string(bytesLeidos[:])
+	result := leido[:len(leido)-3] + "]"
+	var objmap []map[string]interface{}
+	
+	if err := json.Unmarshal([]byte(result), &objmap); err != nil {
+		log.Fatal(err)
+	}
+	
 
-	json.NewEncoder(w).Encode(string(leido))
+	json.NewEncoder(w).Encode(objmap)
 }
 
 func main() {
