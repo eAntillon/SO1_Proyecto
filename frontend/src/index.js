@@ -6,9 +6,9 @@ import {
 } from "react-router-dom";
 
 import { App } from "./App.js";
-import { Navbar } from "./components/Navbar.js";
-import { ProcessScreen } from "./components/ProcessScreen.js";
-import { RamScreen } from "./components/RamScreen.js";
+import { Navbar } from "./components/models/Navbar.js";
+import { ProcessScreen } from "./components/Screens/ProcessScreen.js";
+import { RamScreen } from "./components/Screens/RamScreen.js";
 import "./index.css";
 
 render(

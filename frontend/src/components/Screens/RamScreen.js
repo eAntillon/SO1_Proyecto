@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
 import "./RamScreen.css";
-import { VirtualMachine1 } from './VirtualMachine1';
-import { VirtualMachine2 } from './VirtualMachine2';
-import { Graphic } from './Graphic';
+import { VirtualMachine1 } from '../models/VirtualMachine1.js';
+import { VirtualMachine2 } from '../models/VirtualMachine2.js';
+import { Graphic } from '../models/Graphic.js';
 
 export const RamScreen = () => {
   //Arreglos usados para almacenar un total de 60 valores a mostrar en las graficas

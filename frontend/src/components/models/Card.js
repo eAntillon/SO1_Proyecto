@@ -1,9 +1,9 @@
 import React from 'react';
-import "./RamScreen.css";
+import "../Screens/RamScreen.css";
 
 export const Card = ( { title, value } ) => {
   return (
-    <div className="card">
+    <div className="card animate__animated animate__fadeIn">
     <h3 className="title">{title}</h3>
     <div className="bar">
       <div className="emptybar"></div>

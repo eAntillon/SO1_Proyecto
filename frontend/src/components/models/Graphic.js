@@ -6,7 +6,7 @@ export const Graphic = ( data ) => {
   const { vm1, vm2 } = data;
 
   return (
-    <div className='container3'>
+    <div className='container3 animate__animated animate__bounceInRight'>
       <Line
         datasetIdKey='id'
         data={{
