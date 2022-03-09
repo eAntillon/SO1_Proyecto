@@ -24,16 +24,16 @@ MODULE_VERSION("1.0.0");
 
 static int escribir_a_proc(struct seq_file *file_proc, void *v)
 {
+
+
     seq_printf(file_proc, "[");
     for_each_process(task)
     {                                                                                                   
-        seq_printf(file_proc, "{\"process_id\": %d,\"process_name\": \"%s\"},\n", task->pid, task->comm);
+        seq_printf(file_proc, "{\"process_id\": %d,\"process_name\": \"%s\", \"state\": \"%ld\"},\n", task->pid, task->comm, task->state);
         list_for_each(list, &task->children)
         { 
-
             task_child = list_entry(list, struct task_struct, sibling);
-
-            seq_printf(file_proc, "{\"parent_id\": %d,\"parent_name\":\"%s\", \"process_id\": %d, \"process_name\": \"%s\"},\n", task->pid, task->comm, task_child->pid, task_child->comm);
+            seq_printf(file_proc, "{\"parent_id\": %d,\"parent_name\":\"%s\", \"process_id\": %d, \"process_name\": \"%s\", \"state\": \"%ld\"},\n", task->pid, task->comm, task_child->pid, task_child->comm, task_child->state);
         }
     }
     seq_printf(file_proc, "]");
