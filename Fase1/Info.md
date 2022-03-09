@@ -28,3 +28,14 @@
         "message": "Datos almacenado en base de datos"
     }
     ```
+
+# VM Servers
+
+## VM1
+- ip: 35.206.82.146
+- user
+
+## VM2
+- ip 35.226.199.209
+- user
+
