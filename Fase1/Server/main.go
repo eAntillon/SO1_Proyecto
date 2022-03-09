@@ -31,10 +31,10 @@ type ramgenerada struct {
 }
 
 type logS struct {
-	nombreVM string      `json:"nombreVM"`
-	endpoint string      `json:"endpoint"`
-	data     ramgenerada `json:"data"`
-	date     string      `json:"date"`
+	NombreVM string      `json:"nombreVM"`
+	Endpoint string      `json:"endpoint"`
+	Data     ramgenerada `json:"data"`
+	Date     string      `json:"date"`
 }
 
 func loadEnv() {
@@ -70,25 +70,29 @@ func getram(w http.ResponseWriter, r *http.Request) {
 	var data1 ramgenerada
 	json.Unmarshal(bytesLeidos, &data1)
 
+	// Los modelos van con mayuscula >:v
 	logSend := logS{
-		nombreVM: os.Getenv("VM"),
-		endpoint: "/getram",
-		data:     data1,
-		date:     strings.Split(time.Now().String(), ".")[0],
+		NombreVM: os.Getenv("VM"),
+		Endpoint: "/getram",
+		Data:     data1,
+		Date:     strings.Split(time.Now().String(), ".")[0],
 	}
 
 	cloudFunction := "https://us-central1-nimble-service-343418.cloudfunctions.net/function-1"
 	enviar, _ := json.Marshal(logSend)
 
-	response, err0 := http.NewRequest("POST", cloudFunction, bytes.NewBuffer(enviar))
-	response.Header.Set("X-Custom-Header", "myvalue")
-	response.Header.Set("Content-Type", "application/json")
-
+	response, err0 := http.Post(cloudFunction, "application/json", bytes.NewBuffer(enviar))
+	
 	if err0 != nil {
 		log.Println(err0)
 		return
 	} else {
-		fmt.Println("Insertado", response)
+		body, err := ioutil.ReadAll(response.Body)
+		if err != nil {
+			panic(err)
+		}
+		jsonStr := string(body)
+		fmt.Println("Response: ", jsonStr)
 	}
 
 	json.NewEncoder(w).Encode(data)
