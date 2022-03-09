@@ -14,7 +14,7 @@ export const ProcessScreen = () => {
       .then((response) => {
         return response.json();
       }).catch(() => {
-        console.log("Error en solicitud a las vm ram");
+        console.log("Error en solicitud a las vm procesos");
         return "";
       });
     await restructureData(result);

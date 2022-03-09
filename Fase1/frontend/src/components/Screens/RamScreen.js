@@ -69,6 +69,7 @@ export const RamScreen = () => {
     <div>
       <VirtualMachine1 {...actualM1}/>
       <VirtualMachine2 {...actualM2}/>
+      <h2 className="h2_class">Gráfica: Uso de memoria RAM</h2>
       <Graphic vm1={Maquina1} vm2={Maquina2}/>
     </div>
   )
