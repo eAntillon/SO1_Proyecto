@@ -29,13 +29,16 @@
     }
     ```
 
-# VM Servers
+## Load Balancing
+- URL http://35.209.225.6/<endpoint>
 
-## VM1
+## VM Servers
+
+### VM1
 - ip: 35.206.82.146
 - user
 
-## VM2
+### VM2
 - ip 35.226.199.209
 - user
 
