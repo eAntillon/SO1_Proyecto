@@ -1,12 +1,15 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"strings"
+	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
@@ -18,6 +21,20 @@ type InfoRam struct {
 	Ram_usada      int    `json:"Ramusage"`
 	Porcentaje_uso int    `json:"Rampercent"`
 	Ram_libre      int    `json:"Freeram"`
+}
+
+type ramgenerada struct {
+	Totalram   int `json:"totalram"`
+	Ramusage   int `json:"ramusage"`
+	Rampercent int `json:"rampercent"`
+	Freeram    int `json:"freeram"`
+}
+
+type logS struct {
+	nombreVM string      `json:"nombreVM"`
+	endpoint string      `json:"endpoint"`
+	data     ramgenerada `json:"data"`
+	date     string      `json:"date"`
 }
 
 func loadEnv() {
@@ -49,6 +66,31 @@ func getram(w http.ResponseWriter, r *http.Request) {
 	var data InfoRam
 	json.Unmarshal(bytesLeidos, &data)
 	data.Vm = os.Getenv("VM")
+
+	var data1 ramgenerada
+	json.Unmarshal(bytesLeidos, &data1)
+
+	logSend := logS{
+		nombreVM: os.Getenv("VM"),
+		endpoint: "/getram",
+		data:     data1,
+		date:     strings.Split(time.Now().String(), ".")[0],
+	}
+
+	cloudFunction := "https://us-central1-nimble-service-343418.cloudfunctions.net/function-1"
+	enviar, _ := json.Marshal(logSend)
+
+	response, err0 := http.NewRequest("POST", cloudFunction, bytes.NewBuffer(enviar))
+	response.Header.Set("X-Custom-Header", "myvalue")
+	response.Header.Set("Content-Type", "application/json")
+
+	if err0 != nil {
+		log.Println(err0)
+		return
+	} else {
+		fmt.Println("Insertado", response)
+	}
+
 	json.NewEncoder(w).Encode(data)
 }
 
