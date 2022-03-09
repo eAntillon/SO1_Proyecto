@@ -7,6 +7,7 @@ import {
 
 import { App } from "./App.js";
 import { Navbar } from "./components/models/Navbar.js";
+import { ApiReports } from "./components/Screens/ApiReports.js";
 import { ProcessScreen } from "./components/Screens/ProcessScreen.js";
 import { RamScreen } from "./components/Screens/RamScreen.js";
 import "./index.css";
@@ -18,6 +19,7 @@ render(
       <Route path="/" element={<App />} />
       <Route path="/ramscreen" element={<RamScreen />} />
       <Route path="/processscreen" element={<ProcessScreen />} />
+      <Route path="/apireports" element={<ApiReports />} />
       <Route path="*" element={<App />} />
     </Routes>
   </BrowserRouter>,

@@ -16,7 +16,7 @@ export const Graphic = ( data ) => {
               id: 1,
               label: 'VM1',
               data: vm1.map((dato)=>{
-                return dato.porcentaje_uso;
+                return dato.Rampercent;
               }),
               borderColor: 'rgb(255, 99, 132)',
               backgroundColor: 'rgba(255, 99, 132, 0.5)',
@@ -25,7 +25,7 @@ export const Graphic = ( data ) => {
               id: 2,
               label: 'VM2',
               data: vm2.map((dato)=>{
-                return dato.porcentaje_uso;
+                return dato.Rampercent;
               }),
               borderColor: 'rgba(0, 255, 0, 0.72)',
               backgroundColor: 'rgba(0, 255, 0, 0.72)',

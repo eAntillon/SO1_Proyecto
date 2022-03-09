@@ -31,6 +31,15 @@ export const Navbar = () => {
           >
             Procesos
           </NavLink>
+
+          <NavLink
+            activeclassname="active"
+            className="nav-item nav-link"
+            exact="true"
+            to="/apireports"
+          >
+            Reportes
+          </NavLink>
         </div>
       </div>
     </nav>
