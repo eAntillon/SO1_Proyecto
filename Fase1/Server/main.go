@@ -37,6 +37,13 @@ type logS struct {
 	Date     string      `json:"date"`
 }
 
+type logCPU struct {
+	NombreVM string                   `json:"nombreVM"`
+	Endpoint string                   `json:"endpoint"`
+	Data     []map[string]interface{} `json:"data"`
+	Date     string                   `json:"date"`
+}
+
 func loadEnv() {
 	err := godotenv.Load()
 	if err != nil {
@@ -70,7 +77,6 @@ func getram(w http.ResponseWriter, r *http.Request) {
 	var data1 ramgenerada
 	json.Unmarshal(bytesLeidos, &data1)
 
-	// Los modelos van con mayuscula >:v
 	logSend := logS{
 		NombreVM: os.Getenv("VM"),
 		Endpoint: "/getram",
@@ -82,7 +88,7 @@ func getram(w http.ResponseWriter, r *http.Request) {
 	enviar, _ := json.Marshal(logSend)
 
 	response, err0 := http.Post(cloudFunction, "application/json", bytes.NewBuffer(enviar))
-	
+
 	if err0 != nil {
 		log.Println(err0)
 		return
@@ -116,7 +122,33 @@ func getprocesos(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 
+	//Se crea el log
+	logC := logCPU{
+		NombreVM: os.Getenv("VM"),
+		Endpoint: "/getprocesos",
+		Data:     objmap,
+		Date:     strings.Split(time.Now().String(), ".")[0],
+	}
+
+	cloudFunction := "https://us-central1-nimble-service-343418.cloudfunctions.net/function-1"
+	enviar, _ := json.Marshal(logC)
+
+	response, err0 := http.Post(cloudFunction, "application/json", bytes.NewBuffer(enviar))
+
+	if err0 != nil {
+		log.Println(err0)
+		return
+	} else {
+		body, err := ioutil.ReadAll(response.Body)
+		if err != nil {
+			panic(err)
+		}
+		jsonStr := string(body)
+		fmt.Println("Response: ", jsonStr)
+	}
+
 	json.NewEncoder(w).Encode(objmap)
+
 }
 
 func main() {
