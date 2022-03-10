@@ -16,13 +16,23 @@ export const AccordionProcess1 = (datos) => {
               <Accordion.Item eventKey={item.id}>
                 <Accordion.Header>
                   <table className="table">
-                    <tbody>
+                    <tbody key={item.id}>
                       <td>
                         Proceso: {item.name}
                       </td>
                       <td>
                         PID: {item.id}
                       </td>
+                      {
+                        item.status === 1 ?
+                          <td>
+                            Estado: Inactivo
+                          </td>
+                          :
+                          <td>
+                            Estado: Activo
+                          </td>
+                      }
                     </tbody>
                   </table>
                 </Accordion.Header>
@@ -33,7 +43,7 @@ export const AccordionProcess1 = (datos) => {
                       {
                         item.children.map(child => {
                           return (
-                            <tbody>
+                            <tbody key={child.id}>
                               <td>
                                 Proceso: {child.name}
                               </td>
@@ -43,6 +53,16 @@ export const AccordionProcess1 = (datos) => {
                               <td>
                                 PID_padre: {item.id}
                               </td>
+                              {
+                                child.status === 1 ?
+                                  <td>
+                                    Estado: Inactivo
+                                  </td>
+                                  :
+                                  <td>
+                                    Estado: Activo
+                                  </td>
+                              }
                             </tbody>
                           )
                         })

@@ -5,9 +5,11 @@ import { AccordionProcess1 } from '../models/AccordionProcess1';
 import { AccordionProcess2 } from '../models/AccordionProcess2';
 
 export const ProcessScreen = () => {
+  //Variables que almacenan todos los procesos registrados por maquina
   const [Maquina1, setMaquina1] = useState([]);
   const [Maquina2, setMaquina2] = useState([]);
 
+  //Metodo que se ejecuta para obtener la información de las maquinas
   const getData = async () => {
     let ruta = `http://${process.env.REACT_APP_API}/getprocesos`;
     let result = await fetch(ruta)
@@ -20,6 +22,7 @@ export const ProcessScreen = () => {
     await restructureData(result);
   };
 
+  //Metodo para reordenar la informacion a conveniencia
   const restructureData = async ( res ) => {
     const { data } = res;
     let finalData = {};
@@ -27,6 +30,7 @@ export const ProcessScreen = () => {
       const newData = {
         id: process.process_id,
         name: process.process_name,
+        status: process.state,
         children: []
       }
       if(process.hasOwnProperty("parent_id")){
@@ -36,6 +40,7 @@ export const ProcessScreen = () => {
         finalData[newData["id"]] = newData;
       }
     }
+    //Utilizamos sweet alert para mostrar que se ha obtenido la informacion de una maquina
     if (res.nombreVM === "Maquina1") {
       setMaquina1(Object.values(finalData));
       Swal.fire({

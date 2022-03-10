@@ -18,8 +18,9 @@ io.on('connection', async (client) => {
     let connection = await cliente.connect();
     let db = await connection.db("Proyecto");
     let collection = await db.collection("logs");
-    let data = await collection.find({}).sort({$natural:-1}).limit(30).toArray();
+    let data = await collection.find({}).sort({date:-1}).limit(50).toArray();
     io.emit("sendlogs", data);
   });
 });
+
 server.listen(8080);

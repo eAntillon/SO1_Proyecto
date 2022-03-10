@@ -5,34 +5,38 @@ import { io } from "socket.io-client";
 const socket = io.connect(process.env.REACT_APP_SOCKETS);
 
 export const ApiReports = () => {
+  //Variable para mantener toda la data que se devuelve de la base de datos de mongo
   const [data, setData] = useState([]);
+
+  //Metodo que se ejecuta al iniciar la pagina y emite el mensaje para ser escuchado por los sockets
   useEffect(() => {
     socket.emit("getlogs");
   }, []);
 
+  //Metodo para recibir la data de los sockets
   socket.on("sendlogs", (object) => {
     setData(object);
   });
 
   return (
     <div>
-      <Accordion defaultActiveKey="0" className="Accordion_1">
+      <Accordion defaultActiveKey="0" className="Accordion_3 animate__animated animate__fadeInDown">
         {
           data.map((item, index) => {
             return (
               <Accordion.Item eventKey={index + 1}>
                 <Accordion.Header>
                   <table className="table">
-                    <tbody>
-                      <td>
-                        Maquina: {item.nombreVM}
-                      </td>
-                      <td>
-                        Endpoint: {item.endpoint}
-                      </td>
-                      <td>
-                        Fecha: {item.date}
-                      </td>
+                    <tbody key={index + 1}>
+                        <td>
+                          Maquina: {item.nombreVM}
+                        </td>
+                        <td>
+                          Endpoint: {item.endpoint}
+                        </td>
+                        <td>
+                          Fecha: {item.date}
+                        </td>
                     </tbody>
                   </table>
                 </Accordion.Header>
@@ -87,7 +91,3 @@ export const ApiReports = () => {
     </div>
   )
 }
-
-/*
-
-*/
