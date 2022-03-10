@@ -56,7 +56,7 @@ func home(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-	json.NewEncoder(w).Encode("Proyecto 1 Grupo 6")
+	json.NewEncoder(w).Encode("Proyecto 1 Grupo 6 - Maquina #")
 }
 
 func getram(w http.ResponseWriter, r *http.Request) {
@@ -154,7 +154,7 @@ func getprocesos(w http.ResponseWriter, r *http.Request) {
 func main() {
 	router := mux.NewRouter()
 	loadEnv()
-	http.HandleFunc("/", home)
+	router.HandleFunc("/", home).Methods("GET", "OPTIONS")
 	router.HandleFunc("/getram", getram).Methods("GET", "OPTIONS")
 	router.HandleFunc("/getprocesos", getprocesos).Methods("GET", "OPTIONS")
 	fmt.Println("Server running on port 5000")
