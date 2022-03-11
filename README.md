@@ -1,5 +1,5 @@
 # Sistemas operativos 1
-# Proyecto #Fase1
+# Proyecto - Fase1
 ### Grupo #6
 ## Integrantes💁
 
