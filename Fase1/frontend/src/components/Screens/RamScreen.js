@@ -27,7 +27,7 @@ export const RamScreen = () => {
   //Metodo que se encarga de realizar la petición a la base de datos cada 2 segundos
   useEffect(() => {
     const getData = async () =>{
-      let ruta = `http://${process.env.REACT_APP_API}/getram`;
+      let ruta = `${process.env.REACT_APP_API}/getram`;
       let result = await fetch(ruta)
       .then((response) => {
           return response.json();

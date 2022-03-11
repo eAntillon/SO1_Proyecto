@@ -10,7 +10,7 @@ export const App = () =>{
     <Layout>
       <Hero
         title="Grupo #6"
-        content="Sistemas operativos 1 - PROYECTO FASE 1"
+        content="Sistemas operativos 1 - PROYECTO - FASE 1"
         illustration={HeroIllustration}
       />
     </Layout>

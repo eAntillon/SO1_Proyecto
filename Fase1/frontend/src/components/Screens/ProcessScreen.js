@@ -11,7 +11,7 @@ export const ProcessScreen = () => {
 
   //Metodo que se ejecuta para obtener la información de las maquinas
   const getData = async () => {
-    let ruta = `http://${process.env.REACT_APP_API}/getprocesos`;
+    let ruta = `${process.env.REACT_APP_API}/getprocesos`;
     let result = await fetch(ruta)
       .then((response) => {
         return response.json();
