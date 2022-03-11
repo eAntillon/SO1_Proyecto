@@ -1,15 +1,26 @@
-const server = require('http').createServer();
-require("dotenv").config();
-let user = process.env.USR;
-let pass = process.env.PASS;
-let host = process.env.HOST;
+const app = require('express')();
+var cors = require('cors');
+app.use(cors());
+
+app.get("/", (req, res)=>{
+  res.send({
+    data: "Sockets"
+  });
+});
+
+const server = require('http').createServer(app);
+
+const user = "proyecto";
+const pass = "7T4MGIMvis";
+const host = "34.72.202.175:27017";
 
 //Coneccion con mongo
 const uri = `mongodb://${user}:${pass}@${host}`;
 const { MongoClient } = require('mongodb');
 
-const io = require('socket.io')(server,{ cors: {
-  origin: "*"
+const io = require('socket.io')(server, { cors: {
+  origin: '*',
+  methods: ["GET","POST"]
 }});
 
 io.on('connection', async (client) => {
@@ -23,4 +34,4 @@ io.on('connection', async (client) => {
   });
 });
 
-server.listen(8080);
+server.listen(5000);

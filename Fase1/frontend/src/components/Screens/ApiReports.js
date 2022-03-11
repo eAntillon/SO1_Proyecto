@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Accordion } from 'react-bootstrap';
 
 import { io } from "socket.io-client";
-const socket = io.connect(process.env.REACT_APP_SOCKETS);
 
 export const ApiReports = () => {
+  const socket = io.connect(process.env.REACT_APP_SOCKETS);
+  
   //Variable para mantener toda la data que se devuelve de la base de datos de mongo
   const [data, setData] = useState([]);
 
