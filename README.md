@@ -12,8 +12,8 @@
 <ul>
   <li>Documentacion:
     <ul>
-       <li><a href="https://github.com/eAntillon/SO1_Proyecto/tree/main/Fase1/frontend/ManualTecnico.md" target="_blank">:point_right:Manual técnico</a></li>
-       <li><a href="https://github.com/eAntillon/SO1_Proyecto/tree/main/Fase1/frontend/ManualTecnico.md/ManualUsuario.md" target="_blank">:point_right:Manual de Usuario</a></li>
+       <li><a href="https://github.com/eAntillon/SO1_Proyecto/blob/main/Fase1/documentacion/ManualTecnico.md" target="_blank">:point_right:Manual técnico</a></li>
+       <li><a href="https://github.com/eAntillon/SO1_Proyecto/blob/main/Fase1/documentacion/ManualUsuario.md" target="_blank">:point_right:Manual de Usuario</a></li>
     </ul>
   </li>
 </ul>
