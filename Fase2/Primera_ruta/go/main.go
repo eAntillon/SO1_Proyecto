@@ -18,10 +18,6 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-//var (
-//	addr = flag.String("addr", os.Getenv("SERVER_NODE_PATH"), "the address to connect to")
-//)
-
 type Game struct {
 	GameId  int32 `json:"game_id"`
 	Players int32 `json:"players"`
