@@ -78,7 +78,7 @@ func main() {
 	port := os.Getenv("GO_CLIENT_PORT")
 	router := mux.NewRouter().StrictSlash(false)
 	router.HandleFunc("/", IndexHandler)
-	router.HandleFunc("/game", game).Methods("POST")
+	router.HandleFunc("/playGame", game).Methods("POST")
 	log.Println("Listening at port " + port)
 	log.Fatal(http.ListenAndServe(":"+port, router))
 }

@@ -12,15 +12,15 @@ const game1 = async (players) => {
 
 // El ganador siempre es el ultimo jugador
 const game2 = async (players) => {
-  const game_name = "last-person";
-  const result = await sendLog(players, players, game_name, winner);
+  const game_name = "last-one";
+  const result = await sendLog(2, players, game_name, players);
   if (result === -1) return "Error in game2";
   return "Success game2";
 }
 
 // Siempre gana el jugador que corresponde a la mitad del total de jugadores, si es impar se redondea
 const game3 = async (players) => {
-  const game_name = "half-winner";
+  const game_name = "middle-winner";
   let winner;
   if (players % 2 === 0) {
     winner = players / 2;
@@ -34,10 +34,10 @@ const game3 = async (players) => {
 
 // El ganador se elige de manera aleatoria únicamente en los números pares
 const game4 = async (players) => {
-  const game_name = "random";
+  const game_name = "pair-players";
   let arr = [];
   for(let i = 1; i <= players; i++){
-      if(i%2==0) arr.push(i)
+      if(i%2===0) arr.push(i)
   }
   let winner = arr[random(0,arr.length-1)]
   const result = await sendLog(4, players, game_name, winner);
@@ -45,11 +45,17 @@ const game4 = async (players) => {
   return "Success game4";
 }
 
+// El ganador se elige de manera aleatoria únicamente en los números impares
 const game5 = async (players) => {
-  const game_name = "random";
+  const game_name = "odd-players";
+  let arr = [];
+  for(let i = 1; i <= players; i++){
+      if(i%2!==0) arr.push(i)
+  }
+  let winner = arr[random(0,arr.length-1)]
   const result = await sendLog(5, players, game_name, winner);
-  if (result === -1) return "Error in game1";
-  return "Success game1";
+  if (result === -1) return "Error in game5";
+  return "Success game5";
 }
 
 const sendLog = async (game_id, players, game_name, winner) => {
