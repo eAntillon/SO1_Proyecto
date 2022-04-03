@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option go_package = "confproto";
+option go_package = "github.com/eAntillon/SO1_Proyecto/tree/main/Fase2/Segunda_Ruta/Server/proto";
 
 package confproto;
 
