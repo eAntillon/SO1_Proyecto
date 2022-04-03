@@ -1,0 +1,11 @@
+Para instalar los protos
+sudo apt install protobuf-compiler
+
+Instalar go
+sudo apt  install gccgo-go 
+
+Iniciar el mod en la carpeta server
+ go mod init servergrpc
+
+En la carpeta proto
+protoc --go_out=plugins=grpc:. configuracion.proto 
