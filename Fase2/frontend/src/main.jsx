@@ -1,0 +1,27 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import 'bootswatch/dist/zephyr/bootstrap.min.css';
+import * as V from 'victory';
+
+import { Container } from 'react-bootstrap';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import GraficasPage from './pages/GraficasPage';
+import Navigation from './components/Navigation';
+
+ReactDOM.render(
+    <React.StrictMode>
+        <Router>
+            <Container fluid className="p-0">
+                <Navigation />
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/graficas" element={<GraficasPage />} />
+                    {/* <Route path="/graficas" element={<Graficas />} /> */}
+                </Routes>
+            </Container>
+        </Router>
+    </React.StrictMode>,
+    document.getElementById('root')
+);
