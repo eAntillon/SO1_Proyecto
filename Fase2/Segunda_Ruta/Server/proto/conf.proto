@@ -5,7 +5,7 @@ option go_package = "github.com/eAntillon/SO1_Proyecto/tree/main/Fase2/Segunda_R
 package confproto;
 
 service getInfo{
-    rpc PlayGame (GameRequest) returns (GameReply){}
+  rpc PlayGame (GameRequest) returns (GameReply){}
 }
 
 message GameRequest {

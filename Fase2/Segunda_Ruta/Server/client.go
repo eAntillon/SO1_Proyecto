@@ -34,7 +34,7 @@ func main() {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.PlayGame(ctx, &pb.GameRequest{Gameid: 1, Players: 2})
+	r, err := c.PlayGame(ctx, &pb.GameRequest{Gameid: 5, Players: 10})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
