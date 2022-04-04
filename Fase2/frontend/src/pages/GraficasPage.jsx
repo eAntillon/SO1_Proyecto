@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Table, Spinner, Stack, Row, Col } from 'react-bootstrap';
+import { Container, Table, Spinner, Row, Col } from 'react-bootstrap';
 import { getLogs } from '../api/logs';
 import BarChart from '../components/BarChart';
 import PieChart from '../components/PieChart';
@@ -32,21 +32,21 @@ const GraficasPage = () => {
                     </Spinner>
                 </Container>
             ) : (
-                <Row className='w-100 d-flex justify-content-center'>
-                    <Col xs={11} md={6} lg={5} xl={3} className='p-4'>
+                <Row className='w-100 d-flex justify-content-around p-5'>
+                    <Col xs={11} md={6} lg={6} xl={4} xxl={3}>
                         <h2 className="mb-3">Top 3 juegos</h2>
                         <Container className=' card'>
                             <BarChart data={filterTop3(data)} />
                         </Container>
                     </Col>
-                    <Col xs={11} md={6} lg={5} xl={3} className='p-4'>
+                    <Col xs={11} md={6} lg={6} xl={4} xxl={3}>
                         <h2 className="mb-3">Subscribers</h2>
                         <Container className=' card'>
                             <PieChart data={calculatePercentage(data)} />
                         </Container>
                     </Col>
 
-                    <div className="p-5 pt-0 p-xs-0">
+                    <div className="mt-4 pt-0 p-xs-0">
                         <h2 className="mb-3">Logs</h2>
                         <Table striped bordered hover>
                             <thead>

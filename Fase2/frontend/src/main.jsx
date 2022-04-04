@@ -13,7 +13,7 @@ import Navigation from './components/Navigation';
 ReactDOM.render(
     <React.StrictMode>
         <Router>
-            <Container fluid className="p-0">
+            <Container fluid className="p-0 min-vh-100 bg-light">
                 <Navigation />
                 <Routes>
                     <Route path="/" element={<HomePage />} />
