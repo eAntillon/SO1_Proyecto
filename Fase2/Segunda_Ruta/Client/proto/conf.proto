@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package confproto;
+
+service ExecuteGame {
+  rpc PlayGame (GameRequest) returns (GameReply) {}
+}
+
+message GameRequest {
+  int32 gameid = 1;
+  int32 players = 2;
+}
+
+message GameReply {
+  string response = 1;
+}
