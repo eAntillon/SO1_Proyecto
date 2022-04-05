@@ -64,7 +64,7 @@ func (s *server) PlayGame(ctx context.Context, in *pb.GameRequest) (*pb.GameRepl
 
 
 	log.Printf("Received: %v", in.GetPlayers())
-	return &pb.GameReply{Response: "Carenalga respuesta servidor" + fmt.Sprint(int32(result))}, nil
+	return &pb.GameReply{Response: fmt.Sprint(int32(result))}, nil
 }
 
 func main() {
