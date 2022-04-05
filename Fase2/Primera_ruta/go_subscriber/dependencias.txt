@@ -5,6 +5,8 @@ go get go.mongodb.org/mongo-driver
 go get go.mongodb.org/mongo-driver/x/bsonx/bsoncore@v1.8.4
 go get go.mongodb.org/mongo-driver/x/mongo/driver@v1.8.4
 go get go.mongodb.org/mongo-driver/mongo@v1.8.4
+//go get github.com/gitstliu/go-id-worker NO
+go get -u github.com/segmentio/ksuid
 
 //Funcionó sin estos ultimos
 go get go.mongodb.org/mongo-driver/x/mongo/driver/auth@v1.8.4

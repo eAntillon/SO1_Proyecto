@@ -7,7 +7,9 @@ import (
 	"log"
 	"os"
 
+	"github.com/go-redis/redis/v8"
 	"github.com/joho/godotenv"
+	"github.com/segmentio/ksuid"
 	"github.com/streadway/amqp"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -39,7 +41,7 @@ func loadEnv() {
 }
 
 func sendToDataBases(game Game) {
-	sendToMongo(game)
+	//sendToMongo(game)
 	sendToRedis(game)
 	sendToTidb(game)
 }
@@ -81,7 +83,24 @@ func main() {
 }
 
 func sendToRedis(game Game) {
-
+	var ctx = context.Background()
+	loadEnv()
+	finalUrl := os.Getenv("REDIS_DIRECTION")
+	client := redis.NewClient(&redis.Options{
+		Addr:     finalUrl,
+		Password: "",
+		DB:       0,
+	})
+	json, err := json.Marshal(game)
+	if err != nil {
+		log.Fatal(err)
+	}
+	id := ksuid.New()
+	err = client.Set(ctx, id.String(), json, 0).Err()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Log insertado, redis ", id.String())
 }
 
 func sendToTidb(game Game) {
@@ -114,5 +133,5 @@ func sendToMongo(game Game) {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Operacion insertada", insertResult.InsertedID)
+	fmt.Println("Log insertado, mongo", insertResult.InsertedID)
 }
