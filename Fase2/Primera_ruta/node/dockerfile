@@ -7,7 +7,7 @@ COPY package-lock.json ./
 RUN npm install
 #RUN npm install --silent
 #RUN npm install react-scripts@3.4.1 -g --silent
-ENV HOSTNAME_RABBIT=rabbitmq
+ENV HOSTNAME_RABBIT=host.docker.internal
 ENV PORT_RABBIT=5672
 ENV USERNAME_RABBIT=guest
 ENV PASSWORD_RABBIT=guest
@@ -20,3 +20,4 @@ EXPOSE 50051
 CMD ["node", "main.js"]
 
 #docker build -t rocket1530/server .
+#docker run -d -p 50051:50051 --name server -e HOSTNAME_RABBIT=34.69.197.207 rocket1530/server

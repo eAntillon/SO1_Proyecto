@@ -1,8 +1,11 @@
-FROM 1.18.0-alpine3.15
+FROM golang:1.18.0-alpine3.15
 WORKDIR /go/src/myapp
 COPY . .
 RUN go get ./
 ENV GO_CLIENT_PORT=2000
-ENV SERVER_NODE_PATH=localhost:50051
+ENV SERVER_NODE_PATH=34.69.197.207:50051
 EXPOSE 2000
 CMD ["go","run","main.go"]
+
+#docker build -t rocket1530/client .
+#docker run -d -p 2000:2000 --name client rocket1530/client
