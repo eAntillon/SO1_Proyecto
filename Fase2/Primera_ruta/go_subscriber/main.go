@@ -51,7 +51,9 @@ func sendToDataBases(game Game) {
 }
 
 func main() {
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+	loadEnv()
+	finalUrl := os.Getenv("RABBIT_DIRECTION")
+	conn, err := amqp.Dial("amqp://guest:guest@" + finalUrl + ":5672/")
 	if err != nil {
 		log.Fatal(err)
 	}

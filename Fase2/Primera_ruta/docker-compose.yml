@@ -1,0 +1,45 @@
+version: "3.9"
+services:
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: rabbitmq
+    ports:
+      - 15672:15672
+      - 5672:5672
+    networks:
+      - pr1_f2
+
+  server:
+    image: rocket1530/server
+    container_name: server
+    environment:
+      - HOSTNAME_RABBIT=pr1_f2
+      - PORT_RABBIT=5672
+      - USERNAME_RABBIT=guest
+      - PASSWORD_RABBIT=guest
+    ports:
+    - "50051:50051"
+    restart: always
+    depends_on:
+    - rabbitmq
+    networks:
+    - pr1_f2
+
+  subscriber:
+    image: rocket1530/subscriber
+    container_name: subscriber
+    restart: always
+    environment:
+     - MONGO_DIRECTION=mongodb://mongodb_exporter:password@34.125.12.187:27017/admin?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false
+     - REDIS_DIRECTION=34.122.245.240:5000
+     - TIDB_CONNECTION=grupo6:grupo6123@tcp(35.232.164.202:4000)/fase2
+     - RABBIT_DIRECTION=pr1_f2
+    depends_on:
+    - rabbitmq
+    networks:
+    - pr1_f2
+  
+networks:
+  pr1_f2:
+    name: pr1_f2
+    driver: bridge
