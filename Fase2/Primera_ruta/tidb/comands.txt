@@ -1,0 +1,15 @@
+Para la maquina virtual
+sudo apt-get update
+sudo apt-get install docker.io -y
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+sudo usermod -aG docker $USER
+
+git clone https://github.com/pingcap/tidb-docker-compose.git
+cd tidb-docker-compose && docker-compose pull
+docker-compose up -d
+
+
+
+sudo apt-get install mysql-client -y
+mysql -h 127.0.0.1 -P 4000 -u root

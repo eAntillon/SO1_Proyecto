@@ -6,8 +6,12 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
+
+	"database/sql"
 
 	"github.com/go-redis/redis/v8"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
 	"github.com/segmentio/ksuid"
 	"github.com/streadway/amqp"
@@ -42,7 +46,7 @@ func loadEnv() {
 
 func sendToDataBases(game Game) {
 	//sendToMongo(game)
-	sendToRedis(game)
+	//sendToRedis(game)
 	sendToTidb(game)
 }
 
@@ -104,7 +108,33 @@ func sendToRedis(game Game) {
 }
 
 func sendToTidb(game Game) {
+	loadEnv()
+	finalUrl := os.Getenv("TIDB_CONNECTION")
+	// Open database connection
+	db, err := sql.Open("mysql", finalUrl)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+	sql := getQuery(game)
+	res, err := db.Exec(sql)
+	if err != nil {
+		log.Fatal(err)
+	}
+	lastId, err := res.LastInsertId()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("Log insertado, tidb: %d\n", lastId)
+}
 
+func getQuery(game Game) string {
+	gameid := strconv.FormatInt(int64(game.GameId), 10)
+	players := strconv.FormatInt(int64(game.Players), 10)
+	game_name := game.Name
+	winner := strconv.FormatInt(int64(game.Winner), 10)
+	queue := game.Queue
+	return "INSERT INTO games (game_id, players, game_name, winner, queue) VALUES (" + gameid + "," + players + ",\"" + game_name + "\"," + winner + ",\"" + queue + "\");"
 }
 
 func sendToMongo(game Game) {
