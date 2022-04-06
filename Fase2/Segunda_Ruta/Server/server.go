@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"log"
 	"net"
+	//"time"
+	"encoding/json"
 	"math/rand"
-
+	"github.com/segmentio/kafka-go"
 	"google.golang.org/grpc"
 	pb "github.com/eAntillon/SO1_Proyecto/tree/main/Fase2/Segunda_Ruta/Server/proto"
 )
@@ -21,21 +23,33 @@ type server struct {
 	pb.UnimplementedGetInfoServer
 }
 
+type LogGame struct {
+	Game_id  int32 `json:"game_id"`
+	Players int32 `json:"players"`
+	Game_name string `json:"game_name"`
+    Winner int32 `json:"winner"`
+    Queue string `json:"queue"`
+}
+
 
 // SayHello implements helloworld.GreeterServer
 func (s *server) PlayGame(ctx context.Context, in *pb.GameRequest) (*pb.GameReply, error) {
 	game, players := in.GetGameid(), in.GetPlayers()
-
+	game_name := ""
 	//Los juegos
 	result := 0
 	pl := int(players)
 	if game == 1 {
+		game_name = "random"
 		result = rand.Intn(pl-1) + 1
 	} else if game == 2 {
+		game_name = "last-one"
 		result = pl
 	} else if game == 3 {
+		game_name = "middle-winner"
 		result = pl/2
 	} else if game == 4 {
+		game_name = "pair-players"
 		num := rand.Intn(pl-1)+1
 		if num%2 == 0 {
 			result = num
@@ -48,6 +62,7 @@ func (s *server) PlayGame(ctx context.Context, in *pb.GameRequest) (*pb.GameRepl
 			
 		}
 	} else if game == 5 {
+		game_name = "odd-players"
 		num := rand.Intn(pl-1)+1
 		if num%2 == 0 {
 			if num >= pl {
@@ -58,13 +73,49 @@ func (s *server) PlayGame(ctx context.Context, in *pb.GameRequest) (*pb.GameRepl
 		} else {
 			result = num
 		}
-	} else {
-		result = 0
+	}
+
+	if game > 0 {
+		if game <= 5{
+			r := int32(result)
+			logSend := LogGame{
+				Game_id: game,
+				Players: players,
+				Game_name: game_name,
+				Winner: int32(r),
+				Queue: "Kafka",
+			}
+			savekafka(logSend)
+		}
 	}
 
 
-	log.Printf("Received: %v", in.GetPlayers())
+	log.Printf("Received: %v", in.GetGameid())
 	return &pb.GameReply{Response: fmt.Sprint(int32(result))}, nil
+}
+
+func savekafka(logSend LogGame) {
+	
+	topic := "my-topic"
+	partition := 0
+	jsonString, err := json.Marshal(logSend)
+	conn, err := kafka.DialLeader(context.Background(), "tcp", "localhost:9092", topic, partition)
+	if err != nil{
+		log.Fatal("failed to connect: ",err.Error())
+	}
+	
+	for _, word := range []string{string(jsonString)}{
+		_, err = conn.WriteMessages(
+			kafka.Message{Value: []byte(word)},
+		)
+		if err != nil {
+			log.Fatal("failed to send messages: ", err)
+		}
+	}
+	if err := conn.Close(); err != nil {
+		log.Fatal("Failed to close conection: ", err)
+	}
+	
 }
 
 func main() {

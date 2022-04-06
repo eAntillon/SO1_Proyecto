@@ -10,6 +10,8 @@ app.use(express.json());
 var corsOptions = { origin: true, optionsSuccessStatus: 200 };
 app.use(cors(corsOptions));
 app.use(router);
+const { response } = require('express');
+
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
     keepCase: true,
     longs: String,
@@ -23,20 +25,22 @@ const game_proto = grpc.loadPackageDefinition(packageDefinition).confproto;
 
 
 router.get('/',(req,res)=>{
-    res.json("al fin");
+    res.json("Proyecto-Fase2-Ruta-KAFKA");
 });
 
 
 router.post('/Game', (req, res) =>{
-    const {Gameid, Players} = req.body;
+    var won = ""
         // Establish connection with the server
-        const client = new game_proto.getInfo('0.0.0.0:50051', grpc.credentials.createInsecure());
-        client.PlayGame({gameid: req.body.Gameid, players: req.body.Players} , function(err, response) {
-          console.log('Data:', response); // API response
-        });
-        res.send("Juego iniciado")
+    const client = new game_proto.getInfo('0.0.0.0:50051', grpc.credentials.createInsecure());
+    client.PlayGame({gameid: req.body.game_id, players: req.body.players} , function(err, response) {
+        console.log('Data:', response); // API response
+        won = response.response
+        res.send("El ganador es el jugador: " + won)
+    });
+        
 });
-
+ 
 app.listen(app.get('port'),() => {
     console.log(`Server on port ${app.get('port')}`);
 });
