@@ -11,6 +11,7 @@ var corsOptions = { origin: true, optionsSuccessStatus: 200 };
 app.use(cors(corsOptions));
 app.use(router);
 const { response } = require('express');
+require('dotenv').config();
 
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
     keepCase: true,
@@ -31,12 +32,13 @@ router.get('/',(req,res)=>{
 
 router.post('/Game', (req, res) =>{
     var won = ""
+    var SERVER_GRPC_GO = process.env.SERVER_GRPC_GO
+    console.log(SERVER_GRPC_GO)
         // Establish connection with the server
-    const client = new game_proto.getInfo('0.0.0.0:50051', grpc.credentials.createInsecure());
+    const client = new game_proto.getInfo(SERVER_GRPC_GO, grpc.credentials.createInsecure());
     client.PlayGame({gameid: req.body.game_id, players: req.body.players} , function(err, response) {
         console.log('Data:', response); // API response
-        won = response.response
-        res.send("El ganador es el jugador: " + won)
+        res.send("Inicio el juego")
     });
         
 });
