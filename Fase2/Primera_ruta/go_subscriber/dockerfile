@@ -13,4 +13,4 @@ ENV ENABLE_TIDB=0
 CMD ["go","run","main.go"]
 
 #docker build -t rocket1530/subscriber .
-#docker run -d --name subscriber -e ENABLE_TIDB=1 -e RABBIT_DIRECTION=34.69.197.207 rocket1530/subscriber
+#docker run -d --name subscriber -e ENABLE_TIDB=1 -e RABBIT_DIRECTION=35.238.6.126 -e TIDB_CONNECTION=grupo6:grupo6123@tcp(34.72.97.55:4000)/fase2 rocket1530/subscriber

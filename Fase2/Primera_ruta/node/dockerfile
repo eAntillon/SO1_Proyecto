@@ -20,4 +20,4 @@ EXPOSE 50051
 CMD ["node", "main.js"]
 
 #docker build -t rocket1530/server .
-#docker run -d -p 50051:50051 --name server -e HOSTNAME_RABBIT=34.69.197.207 rocket1530/server
+#docker run -d -p 50051:50051 --name server -e HOSTNAME_RABBIT=35.238.6.126 rocket1530/server

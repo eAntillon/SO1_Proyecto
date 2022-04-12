@@ -8,4 +8,4 @@ EXPOSE 2000
 CMD ["go","run","main.go"]
 
 #docker build -t rocket1530/client .
-#docker run -d -p 2000:2000 --name client rocket1530/client
+#docker run -d -p 2000:2000 --name client -e SERVER_NODE_PATH=35.238.6.126:50051 rocket1530/client
