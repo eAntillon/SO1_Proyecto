@@ -1,25 +1,23 @@
 package main
 
 import (
-	"context"
-	"encoding/json"
 	"fmt"
-	"log"
-	"os"
-	"strconv"
-
-	"database/sql"
-
+	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/go-redis/redis/v8"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
-	"github.com/segmentio/ksuid"
-	"github.com/streadway/amqp"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-)
+	"github.com/segmentio/ksuid"
+	"log"
+	"os"
+	"encoding/json"
+	"strconv"
+	"database/sql"
+	"context"
 
+)
 type Game struct {
 	GameId  int32  `json:"game_id"`
 	Players int32  `json:"players"`
@@ -45,58 +43,45 @@ func loadEnv() {
 }
 
 func sendToDataBases(game Game) {
-	loadEnv()
-	mongo := os.Getenv("ENABLE_MONGO")
-	if mongo == "1" {
-		//sendToMongo(game)
-	}
-	redis := os.Getenv("ENABLE_REDIS")
-	if redis == "1" {
-		sendToRedis(game)
-	}
-	tidb := os.Getenv("ENABLE_TIDB")
-	if tidb == "1" {
-		sendToTidb(game)
-	}
+	//sendToMongo(game)
+	sendToRedis(game)
+	//sendToTidb(game)
 }
 
 func main() {
-	loadEnv()
-	finalUrl := os.Getenv("RABBIT_DIRECTION")
-	conn, err := amqp.Dial("amqp://guest:guest@" + finalUrl + ":5672/")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer conn.Close()
-	ch, err := conn.Channel()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer ch.Close()
-	msg, err := ch.Consume(
-		"games",
-		"",
-		true,
-		false,
-		false,
-		false,
-		nil,
-	)
 
-	noStop := make(chan bool)
-	go func() {
-		for d := range msg {
+	c, err := kafka.NewConsumer(&kafka.ConfigMap{
+		"bootstrap.servers": "localhost:9092",
+		"group.id":          "myGroup",
+		"auto.offset.reset": "earliest",
+	})
+
+	if err != nil {
+		panic(err)
+	}
+
+	c.SubscribeTopics([]string{"my-topic"}, nil)
+
+	for {
+		msg, err := c.ReadMessage(-1)
+		if err == nil {
+			fmt.Printf("Message: %s\n", string(msg.Value))
 			var game Game
-			b := []byte(string(d.Body))
+			b := []byte(string(msg.Value))
 			json.Unmarshal(b, &game)
 			sendToDataBases(game)
 			fmt.Println("Sending log to databases")
+		} else {
+			// The client will automatically try to recover from all errors.
+			fmt.Printf("Consumer error: %v (%v)\n", err, msg)
 		}
-	}()
-	fmt.Println("Succesfully connected to RabbitMQ")
-	fmt.Println("[*] - waiting for messages")
-	<-noStop
+	}
+
+	c.Close()
 }
+
+
+
 
 func sendToRedis(game Game) {
 	var ctx = context.Background()

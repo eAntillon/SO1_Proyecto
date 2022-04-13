@@ -1,0 +1,16 @@
+FROM golang:1.18.0-alpine3.15
+WORKDIR /go/src/myapp
+COPY . .
+RUN go get ./
+ENV MONGO_DIRECTION=mongodb://mongodb_exporter:password@34.125.12.187:27017/admin?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false
+ENV REDIS_DIRECTION=34.122.245.240:5000
+ENV TIDB_CONNECTION=grupo6:grupo6123@tcp(35.232.164.202:4000)/fase2
+ENV RABBIT_DIRECTION=host.docker.internal
+ENV ENABLE_MONGO=0
+ENV ENABLE_REDIS=1
+ENV ENABLE_TIDB=0
+
+CMD ["go","run","main.go"]
+
+#docker build -t rocket1530/subscriber .
+#docker run -d --name subscriber -e ENABLE_TIDB=1 -e RABBIT_DIRECTION=35.238.6.126 -e TIDB_CONNECTION=grupo6:grupo6123@tcp(34.72.97.55:4000)/fase2 rocket1530/subscriber
