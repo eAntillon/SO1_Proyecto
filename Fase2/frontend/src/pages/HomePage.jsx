@@ -28,7 +28,7 @@ const HomePage = () => {
               </tr>
               <tr>
                 <td>3</td>
-                <td>ERICK DANIEL ANTONILLÓN CHINCHILLA</td>
+                <td>ERICK DANIEL ANTILLÓN CHINCHILLA</td>
                 <td>201906552</td>
               </tr>
             </tbody>

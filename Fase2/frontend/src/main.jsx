@@ -9,7 +9,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import GraficasPage from './pages/GraficasPage';
 import Navigation from './components/Navigation';
-
+import Estadisticas from './pages/Estadisticas';
 ReactDOM.render(
     <React.StrictMode>
         <Router>
@@ -18,7 +18,7 @@ ReactDOM.render(
                 <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/graficas" element={<GraficasPage />} />
-                    {/* <Route path="/graficas" element={<Graficas />} /> */}
+                    <Route path="/estadisticas" element={<Estadisticas />} />
                 </Routes>
             </Container>
         </Router>
