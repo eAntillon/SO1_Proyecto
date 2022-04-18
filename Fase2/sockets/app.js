@@ -33,7 +33,7 @@ const io = require('socket.io')(server, { cors: {
 }});
 
 io.on('connection', async (client) => {
-  client.on('getlogs', async ( ) => {
+  const getData = async () =>{
     const dataRedis = await getRedisLogs();
     const dataTidb = await getTidbLogs();
     const data = {
@@ -41,7 +41,8 @@ io.on('connection', async (client) => {
       dataTidb
     }
     io.emit("sendlogs", data);
-  });
+  }
+  setInterval(() => getData(), 1000);
 });
 
-server.listen(5000);
+server.listen(8080);
