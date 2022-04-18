@@ -38,6 +38,7 @@ async fn get_logs(client: web::Data<Client>) -> HttpResponse {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    println!("server running! {}", dotenv::var("DATABASE_URL").unwrap());
     dotenv::dotenv().ok();
     let client = Client::with_uri_str(dotenv::var("DATABASE_URL").unwrap())
         .await
@@ -49,7 +50,7 @@ async fn main() -> std::io::Result<()> {
             .service(hello)
             .service(get_logs)
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind(("0.0.0.0", 8080))?
     .run()
     .await
 }
