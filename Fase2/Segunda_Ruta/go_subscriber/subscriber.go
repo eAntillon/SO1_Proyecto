@@ -43,15 +43,17 @@ func loadEnv() {
 }
 
 func sendToDataBases(game Game) {
-	//sendToMongo(game)
 	sendToRedis(game)
-	//sendToTidb(game)
+	sendToTidb(game)
+	sendToMongo(game)
+
 }
 
 func main() {
-
+	loadEnv()
+	finalUrl := os.Getenv("KAFKA_DIRECTION")
 	c, err := kafka.NewConsumer(&kafka.ConfigMap{
-		"bootstrap.servers": "localhost:9092",
+		"bootstrap.servers": finalUrl,
 		"group.id":          "myGroup",
 		"auto.offset.reset": "earliest",
 	})

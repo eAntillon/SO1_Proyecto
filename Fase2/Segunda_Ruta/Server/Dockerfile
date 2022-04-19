@@ -3,20 +3,13 @@ FROM golang:latest
 WORKDIR /
 COPY . . 
 
-RUN go mod download
+FROM golang:1.18.0-alpine3.15
+WORKDIR /go/src/myapp
+COPY . .
+RUN go get ./
+
+ENV KAFKA_DIRECTION=host.docker.internal:9092
 
 EXPOSE 50051
 
 CMD ["go", "run", "server.go"]
-
-FROM golang:1.17-alpine
-
-WORKDIR /
-COPY . . 
-
-RUN go mod download
-RUN go build -o ./Server
-
-EXPOSE 50051
-
-CMD ["./Server"]
