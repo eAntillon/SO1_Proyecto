@@ -48,7 +48,7 @@ func sendToDataBases(game Game) {
 	loadEnv()
 	mongo := os.Getenv("ENABLE_MONGO")
 	if mongo == "1" {
-		//sendToMongo(game)
+		sendToMongo(game)
 	}
 	redis := os.Getenv("ENABLE_REDIS")
 	if redis == "1" {
