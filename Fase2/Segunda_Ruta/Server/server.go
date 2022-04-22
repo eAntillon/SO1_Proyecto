@@ -12,6 +12,8 @@ import (
 	"github.com/segmentio/kafka-go"
 	"google.golang.org/grpc"
 	pb "github.com/eAntillon/SO1_Proyecto/tree/main/Fase2/Segunda_Ruta/Server/proto"
+	"github.com/joho/godotenv"
+	"os"
 )
 
 var (
@@ -21,6 +23,12 @@ var (
 // server is used to implement helloworld.GreeterServer.
 type server struct {
 	pb.UnimplementedGetInfoServer
+}
+func loadEnv() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error al cargar variables de entorno")
+	}
 }
 
 type LogGame struct {
@@ -89,17 +97,17 @@ func (s *server) PlayGame(ctx context.Context, in *pb.GameRequest) (*pb.GameRepl
 		}
 	}
 
-
 	log.Printf("Received: %v", in.GetGameid())
 	return &pb.GameReply{Response: fmt.Sprint(int32(result))}, nil
 }
 
 func savekafka(logSend LogGame) {
-	
+	loadEnv()
+	finalUrl := os.Getenv("KAFKA_DIRECTION")
 	topic := "my-topic"
 	partition := 0
 	jsonString, err := json.Marshal(logSend)
-	conn, err := kafka.DialLeader(context.Background(), "tcp", "localhost:9092", topic, partition)
+	conn, err := kafka.DialLeader(context.Background(), "tcp", finalUrl, topic, partition)
 	if err != nil{
 		log.Fatal("failed to connect: ",err.Error())
 	}
