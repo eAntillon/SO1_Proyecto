@@ -2,7 +2,9 @@ import axios from 'axios';
 
 // axios api call
 export const getLogs = async () => {
-    const response = await axios.get('http://localhost:8080/get_logs', {
+    // print enviroment variables
+    const url = `${import.meta.env.VITE_BACKEND_RUST}/get_logs`;
+    const response = await axios.get(url, {
         headers: {
             "Access-Control-Allow-Origin": "*",
             'Content-Type': 'application/json',

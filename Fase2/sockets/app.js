@@ -35,10 +35,10 @@ const io = require('socket.io')(server, { cors: {
 io.on('connection', async (client) => {
   const getData = async () =>{
     const dataRedis = await getRedisLogs();
-    const dataTidb = await getTidbLogs();
+    // const dataTidb = await getTidbLogs();
     const data = {
       dataRedis,
-      dataTidb
+      // dataTidb
     }
     io.emit("sendlogs", data);
   }

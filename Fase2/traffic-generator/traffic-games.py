@@ -3,20 +3,14 @@ import json, random
 
 f = open('games.json')
 data = json.load(f)
-
+# http://34.111.25.46:80/Game
 class WebsiteUser(HttpUser):
-    wait_time = between(2, 5)
+    wait_time = between(1, 4)
     
-    # def on_start(self):
-    #     self.client.post("/login", {
-    #         "username": "test_user",
-    #         "password": ""
-    #     })
-    
-    @task
-    def index(self):
-        self.client.get("/")
-    @task(3)
-    def getInfo(self):
+    @task()
+    def Game(self):
         game = random.choice(data['games'])
-        self.client.post(f"/getInfo", json=game)
+        resp = self.client.post(f"/Game", json=game)
+        print(game)
+        print(resp)
+        print("-"*20)

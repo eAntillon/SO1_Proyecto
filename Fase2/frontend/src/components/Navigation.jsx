@@ -7,7 +7,7 @@ const Navigation = () => {
         <>
             <Navbar bg="primary" variant="dark" expand="md" className="w-100 p-2">
                 <Container fluid>
-                    <Navbar.Brand>Proyecto Fase 2</Navbar.Brand>
+                    <Navbar.Brand>Proyecto</Navbar.Brand>
 
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">

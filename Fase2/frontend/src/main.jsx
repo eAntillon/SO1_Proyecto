@@ -13,7 +13,7 @@ import Estadisticas from './pages/Estadisticas';
 ReactDOM.render(
     <React.StrictMode>
         <Router>
-            <Container fluid className="p-0 min-vh-100 bg-light">
+            <Container fluid className="p-0 bg-light" id='app'>
                 <Navigation />
                 <Routes>
                     <Route path="/" element={<HomePage />} />
