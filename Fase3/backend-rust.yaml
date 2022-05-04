@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-rust
+spec:
+  selector:
+    matchLabels:
+      app: backend-rust
+      tier: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: backend-rust
+        tier: backend
+    spec:
+      containers:
+        - name: backend-rust
+          image: "eantillon/backend_rust:latest"
+          env:
+            - name: DATABASE_URL
+              value: "mongodb://34.132.59.236:5001"
+            - name: DATABASE_NAME
+              value: "sopes_fase2"
+            - name: DATABASE_COLL_NAME
+              value: "logs"
+          ports:
+            - name: http-rust
+              containerPort: 8080
+            
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backendservice
+spec:
+  selector:
+    app: backend-rust
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: http-rust

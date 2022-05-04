@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-node
+spec:
+  selector:
+    matchLabels:
+      app: backend-node
+      tier: backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: backend-node
+        tier: backend
+    spec:
+      containers:
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backendservice2
+spec:
+  selector:
+    app: backend-noe
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: http-node

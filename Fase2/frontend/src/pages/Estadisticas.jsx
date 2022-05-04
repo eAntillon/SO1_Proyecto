@@ -11,8 +11,7 @@ const Estadisticas = () => {
     const [selectedPlayer, setSelectedPlayer] = useState(0);
 
     useEffect(() => {
-        console.log(import.meta.env.VITE_BACKEND_NODE);
-        const socket = io(import.meta.env.VITE_BACKEND_NODE);
+        const socket = io('localhost:8080');
         socket.on('connect', () => console.log(socket.id));
         socket.on('connect_error', () => {
             setTimeout(() => socket.connect(), 5000);

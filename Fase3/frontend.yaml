@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  selector:
+    app: practica
+    tier: frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  selector:
+    matchLabels:
+      app: practica
+      tier: frontend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: practica
+        tier: frontend
+        track: stable
+    spec:
+      containers:
+      - name: nginx
+        image: "eantillon/frontend_f3"
+        ports:
+        - containerPort: 80
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/usr/sbin/nginx","-s","quit"]
+      - name: backend-node
+        image: "eantillon/backend_node:latest"
+        env:
+          - name: REDIS_HOST
+            value: "35.184.158.123"
+          - name: REDIS_PORT
+            value: "5002"
+          - name: TIDB_HOST
+            value: "34.102.101.0"
+          - name: TIDB_PORT
+            value: "5003"
+          - name: TIDB_DATABASE
+            value: "proyecto"
+        ports:
+          - name: http-node
+            containerPort: 8080

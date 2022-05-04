@@ -1,7 +1,7 @@
 FROM node:16.14.2-alpine3.15 as builder
 WORKDIR /frontend
 
-ENV VITE_BACKEND_RUST=https://backend-rust-uilxvk2k3a-uc.a.run.app
+ENV VITE_BACKEND_RUST=http://backendservice:8080
 ENV VITE_BACKEND_NODE=https://proyecto1-343723.uc.r.appspot.com
 
 COPY ./package.json /frontend
@@ -11,7 +11,7 @@ RUN npm install --silent
 COPY . .
 
 RUN npm run build
-
+EXPOSE 80
 # Handle Nginx
 FROM nginx
 COPY --from=builder /frontend/dist /usr/share/nginx/html

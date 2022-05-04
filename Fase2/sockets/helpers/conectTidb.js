@@ -7,8 +7,6 @@ const getTidbLogs = async () => {
     const connection = mysql.createConnection({
         host     : process.env.TIDB_HOST,
         port     : process.env.TIDB_PORT,
-        user     : process.env.TIDB_USER,
-        password : process.env.TIDB_PASSWORD,
         database : process.env.TIDB_DATABASE
     });
     const query = util.promisify(connection.query).bind(connection);

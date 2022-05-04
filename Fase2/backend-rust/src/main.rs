@@ -15,6 +15,7 @@ async fn hello() -> impl Responder {
 
 #[get("/get_logs")]
 async fn get_logs(client: web::Data<Client>) -> HttpResponse {
+    println!("Request for logs");
     let collection: Collection<Log> = client
         .database(&dotenv::var("DATABASE_NAME").unwrap())
         .collection(&dotenv::var("DATABASE_COLL_NAME").unwrap());
