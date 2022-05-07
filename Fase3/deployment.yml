@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpc-deployment
+  namespace: squidgame
+  labels:
+    app: grpc-deployment
+spec:
+  selector:
+    matchLabels:
+      app: grpc-deployment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: grpc-deployment
+    spec:
+      hostname: grpc-pod
+      containers:
+        - image: alenav/client_201902046
+          name: grpc-client
+          ports:
+            - containerPort: 5000
+        - image: alenav/server4
+          name: grpc-server
+          ports:
+            - containerPort: 50051
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: subscriber-deployment
+  namespace: squidgame
+  labels:
+    app: subscriber
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: subscriber
+  template:
+    metadata:
+      labels:
+        app: subscriber
+    spec:
+      containers:
+      - name: subscriber-cont
+        image: alenav/gosubscriber
+
+kubectl expose deploy/grpc-deployment --type=LoadBalancer --port=5000 --namespace=squidgame
