@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpc-deployment-kafka
+  namespace: squidgame
+  labels:
+    app: grpc-deployment-kafka
+spec:
+  selector:
+    matchLabels:
+      app: grpc-deployment-kafka
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: grpc-deployment-kafka
+    spec:
+      hostname: grpc-pod-kafka
+      containers:
+        - image: alenav/rclient
+          name: grpc-client
+          env:
+            - name: SERVER_GRPC_GO
+              value: "grpc-pod-kafka:50051"
+          ports:
+            - containerPort: 5000
+        - image: alenav/rservergo
+          name: grpc-server
+          env:
+            - name: KAFKA_DIRECTION
+              value: "my-cluster-kafka-bootstrap:9092"
+          ports:
+            - containerPort: 50051
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: subscriber-deployment-kafka
+  namespace: squidgame
+  labels:
+    app: subscriber
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: subscriber
+  template:
+    metadata:
+      labels:
+        app: subscriber
+    spec:
+      containers:
+      - name: subscriber-cont
+        image: alenav/rrsubscriber
+        env:
+          - name: MONGO_DIRECTION
+            value: "mongodb://34.132.59.236:5001"
+          - name: REDIS_DIRECTION
+            value: "34.102.101.0:5002"
+          - name: TIDB_CONNECTION
+            value: "grupo6:grupo6123@tcp(35.184.158.123:5003)/proyecto"
+          - name: KAFKA_DIRECTION
+            value: "my-cluster-kafka-bootstrap:9092"
