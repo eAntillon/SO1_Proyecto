@@ -29,12 +29,13 @@ type Game struct {
 }
 
 type GameMongo struct {
-	ID      primitive.ObjectID `bson:"_id"`
-	GameId  int32              `bson:"game_id"`
-	Players int32              `bson:"players"`
-	Name    string             `bson:"game_name"`
-	Winner  int32              `bson:"winner"`
-	Queue   string             `bson:"queue"`
+	ID            primitive.ObjectID `bson:"_id"`
+	GameId        int32              `bson:"game_id"`
+	Players       int32              `bson:"players"`
+	Name          string             `bson:"game_name"`
+	Winner        int32              `bson:"winner"`
+	Queue         string             `bson:"queue"`
+	RequestNumber int32              `bson:"request_number"`
 }
 
 func loadEnv() {

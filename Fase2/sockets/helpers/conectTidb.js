@@ -7,7 +7,9 @@ const getTidbLogs = async () => {
     const connection = mysql.createConnection({
         host     : process.env.TIDB_HOST,
         port     : process.env.TIDB_PORT,
-        database : process.env.TIDB_DATABASE
+        database : process.env.TIDB_DATABASE,
+        user     : process.env.TIDB_USER,
+        password : process.env.TIDB_PASSWORD
     });
     const query = util.promisify(connection.query).bind(connection);
     let rows;
@@ -19,6 +21,7 @@ const getTidbLogs = async () => {
     for(let value of rows){
         data.push(value);
     }
+    console.log("logs redis: ", data);
     return data;
 }
 

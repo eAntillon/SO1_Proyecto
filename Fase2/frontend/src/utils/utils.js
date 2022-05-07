@@ -24,7 +24,7 @@ export const filterTop3 = (logs) => {
 };
 
 export const calculatePercentage = (logs) => {
-    const count = {};
+    const count = {'RabbitMQ': 0, 'Kafka': 0};
     logs.forEach((log) => {
         if (count[log.queue] === undefined) {
             count[log.queue] = 1;
@@ -47,6 +47,7 @@ export const calculatePercentage = (logs) => {
             percentage: ((item.count / total) * 100).toFixed(2),
         };
     });
+    
     return percentage;
 };
 
@@ -83,12 +84,16 @@ export const getPlayers = (data) => {
             players.push(game.winner);
         }
     });
+    //order by number
+    players.sort((a, b) => {
+        return a - b;
+    });
     return players;
-}
+};
 
 export const filterPlayer = (data, player) => {
     const filtered = data.filter((game) => {
         return game.winner == player;
     });
     return filtered;
-}
+};

@@ -43,15 +43,19 @@ spec:
         image: "eantillon/backend_node:latest"
         env:
           - name: REDIS_HOST
-            value: "35.184.158.123"
+            value: "34.102.101.0"
           - name: REDIS_PORT
             value: "5002"
           - name: TIDB_HOST
-            value: "34.102.101.0"
+            value: "35.184.158.123"
           - name: TIDB_PORT
             value: "5003"
           - name: TIDB_DATABASE
             value: "proyecto"
+          - name: TIDB_USER
+            value: "grupo6"
+          - name: TIDB_PASSWORD
+            value: "grupo6123"
         ports:
           - name: http-node
             containerPort: 8080
