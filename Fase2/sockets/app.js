@@ -33,16 +33,22 @@ const io = require('socket.io')(server, { cors: {
 }});
 
 io.on('connection', async (client) => {
+  console.log('Client connected...');
   const getData = async () =>{
     const dataRedis = await getRedisLogs();
-    // const dataTidb = await getTidbLogs();
-    const data = {
-      dataRedis,
-      // dataTidb
+    const dataTidb = await getTidbLogs();
+    const data = { dataRedis: [], dataTidb: [] };
+    if(dataRedis.length > 0){
+      data.dataRedis = dataRedis;
     }
+    if(dataTidb.length > 0){
+      data.dataTidb = dataTidb;
+    }
+    console.log(data);
     io.emit("sendlogs", data);
   }
   setInterval(() => getData(), 1000);
 });
 
 server.listen(8080);
+console.log("Server running on port 8080");

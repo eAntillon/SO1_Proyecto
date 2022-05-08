@@ -11,7 +11,7 @@ const Estadisticas = () => {
     const [selectedPlayer, setSelectedPlayer] = useState(0);
 
     useEffect(() => {
-        const socket = io('localhost:8080');
+        const socket = io('https://node-s-uilxvk2k3a-uw.a.run.app');
         socket.on('connect', () => console.log(socket.id));
         socket.on('connect_error', () => {
             setTimeout(() => socket.connect(), 5000);
@@ -19,6 +19,7 @@ const Estadisticas = () => {
         socket.on('sendlogs', (data) => {
             setResponse(data);
         });
+        console.log(response)
         // creanup
         return () => {
             socket.disconnect();
