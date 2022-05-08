@@ -1,0 +1,13 @@
+apiVersion: split.smi-spec.io/v1alpha1
+kind: TrafficSplit
+metadata:
+  name: faulty-traffic
+  namespace: squidgame
+spec:
+  service: svc-rabbit
+  backends:
+  # 50 Rabbit - 50 Kafka
+  - service: svc-rabbit
+    weight: 500m
+  - service: svc-kafka
+    weight: 500m
